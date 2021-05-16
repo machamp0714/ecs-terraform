@@ -4,15 +4,19 @@ locals {
     "ap-northeast-1a" = 1
     "ap-northeast-1c" = 2
   }
+  private_subnets = {
+    "ap-northeast-1a" = 64
+    "ap-northeast-1c" = 65
+  }
 }
 
 resource "aws_vpc" "this" {
   cidr_block           = local.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = merge(
-    map("Name", "${var.tags["system"]}-${var.tags["env"]}-vpc")
-  )
+  tags                 = merge(
+                          map("Name", "${var.tags["system"]}-${var.tags["env"]}-vpc")
+                         )
 }
 
 resource "aws_subnet" "public" {
@@ -21,7 +25,17 @@ resource "aws_subnet" "public" {
   cidr_block              = cidrsubnet(aws_vpc.this.cidr_block, 8, each.value)
   availability_zone       = each.key
   map_public_ip_on_launch = true
-  tags = merge(
-    map("Name", "${var.tags["system"]}-${var.tags["env"]}-public-${each.key}")
-  )
+  tags                    = merge(
+                            map("Name", "${var.tags["system"]}-${var.tags["env"]}-public-${each.key}")
+                          )
+}
+
+resource "aws_subnet" "private" {
+  for_each          = local.private_subnets
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = cidrsubnet(aws_vpc.this.cidr_block, 8, each.value)
+  availability_zone = each.key
+  tags              = merge(
+                        map("Name", "${var.tags["system"]}-${var.tags["env"]}-private-${each.key}")
+                      )
 }
