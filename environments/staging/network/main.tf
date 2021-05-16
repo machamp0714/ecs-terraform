@@ -4,4 +4,8 @@ provider "aws" {
 
 module "network" {
   source =  "../../../modules/network"
+  tags = {
+    env    = "staging"
+    system = "machamp"
+  }
 }
