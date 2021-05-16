@@ -1,4 +1,4 @@
-resource "aws_security_group" "this" {
+resource "aws_security_group" "sg" {
   name   = var.name
   vpc_id = var.vpc_id
   tags   = merge(
@@ -12,7 +12,7 @@ resource "aws_security_group_rule" "ingress" {
   to_port           = var.port
   protocol          = "tcp"
   cidr_blocks       = var.cidr_blocks
-  security_group_id = aws_security_group.this.id
+  security_group_id = aws_security_group.sg.id
 }
 
 resource "aws_security_group_rule" "egress" {
@@ -21,5 +21,5 @@ resource "aws_security_group_rule" "egress" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.this.id
+  security_group_id = aws_security_group.sg.id
 }
