@@ -8,8 +8,19 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    env:
+      TF_VERSION: 0.14.8
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TF_VERSION }}
@@ -22,14 +33,17 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init
+        working_dir: ./environments/staging
 
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        working_dir: ./environments/staging
 
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color
+        working_dir: ./environments/staging
         continue-on-error: true
 
       - run: echo ${{ steps.plan.outputs.stdout }}
