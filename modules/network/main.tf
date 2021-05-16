@@ -39,3 +39,10 @@ resource "aws_subnet" "private" {
                         map("Name", "${var.tags["system"]}-${var.tags["env"]}-private-${each.key}")
                       )
 }
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.this.id
+  tags   = merge(
+            map("Name", "${var.tags["system"]}-${var.tags["env"]}-igw")
+           )
+}
