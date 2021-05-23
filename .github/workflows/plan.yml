@@ -27,8 +27,7 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform fmt
-        run: terraform fmt -check
-        continue-on-error: true
+        run: terraform fmt -check -recursive
 
       - name: Terraform Init
         run: terraform init
@@ -39,6 +38,30 @@ jobs:
         working-directory: ./environments/staging
 
       - name: Terraform Plan
+        id: plan
         run: terraform plan -no-color
         working-directory: ./environments/staging
         continue-on-error: true
+
+      - uses: actions/github-script@v4
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
+
+            </details>`;
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
