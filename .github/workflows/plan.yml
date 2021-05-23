@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  terraform:
+  plan:
     runs-on: ubuntu-latest
     env:
       TF_VERSION: 0.14.8
