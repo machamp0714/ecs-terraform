@@ -11,12 +11,12 @@ module "network" {
 }
 
 module "http-sg" {
-  source = "../../modules/security_group"
-  vpc_id = module.network.vpc_id
-  name   = "http-sg"
-  port   = 80
+  source      = "../../modules/security_group"
+  vpc_id      = module.network.vpc_id
+  name        = "http-sg"
+  port        = 80
   cidr_blocks = ["0.0.0.0/0"]
-  tags        = {
+  tags = {
     env    = "staging"
     system = "machamp"
   }
