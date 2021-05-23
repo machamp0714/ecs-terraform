@@ -29,6 +29,7 @@ jobs:
       - name: Terrafor Apply
         id: apply
         run: terraform apply -auto-approve
+        continue-on-error: true
         working-directory: ./environments/staging
 
       - name: output
