@@ -5,7 +5,7 @@ variable "name" {
 
 variable "vpc_id" {
   description = "ID of the VPC where to create target group"
-  type        = number
+  type        = string
 }
 
 variable "security_group_ids" {
@@ -15,5 +15,5 @@ variable "security_group_ids" {
 
 variable "subnet_ids" {
   description = "List of public subnets ids"
-  type        = list(number)
+  type        = list(string)
 }

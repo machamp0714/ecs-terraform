@@ -10,6 +10,20 @@ module "network" {
   }
 }
 
+module "alb" {
+  source = "../../modules/alb"
+  name   = "machamp-staging-alb"
+  vpc_id = module.network.vpc_id
+  security_group_ids = [
+    module.http_sg.security_group_id,
+    module.https_sg.security_group_id
+  ]
+  subnet_ids = [
+    module.network.public_subet_1a_id,
+    module.network.public_subnet_1c_id
+  ]
+}
+
 module "http_sg" {
   source      = "../../modules/security_group"
   vpc_id      = module.network.vpc_id
@@ -32,18 +46,4 @@ module "https_sg" {
     env    = "staging"
     system = "machamp"
   }
-}
-
-module "alb" {
-  source = "../../modules/alb"
-  name   = "machamp-staging-alb"
-  vpc_id = module.network.vpc_id
-  security_group_ids = [
-    module.http_sg.security_group_id,
-    module.https_sg.security_group_id
-  ]
-  subnet_ids = [
-    module.network.public_subet_1a_id,
-    module.network.public_subnet_1c_id
-  ]
 }
