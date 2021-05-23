@@ -36,7 +36,7 @@ module "https_sg" {
 
 module "alb" {
   source = "../../modules/alb"
-  name = "machamp-staging-alb"
+  name   = "machamp-staging-alb"
   vpc_id = module.network.vpc_id
   security_group_ids = [
     module.http_sg.security_group_id,
