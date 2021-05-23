@@ -24,6 +24,13 @@ module "alb" {
   ]
 }
 
+module "ecr" {
+  source   = "../../modules/ecr"
+  ecr_name = "machamp-repository"
+}
+
+// Security Groups
+
 module "http_sg" {
   source      = "../../modules/security_group"
   vpc_id      = module.network.vpc_id
