@@ -27,7 +27,7 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform fmt
-        run: terraform fmt -check
+        run: terraform fmt -check -recursive
         continue-on-error: true
 
       - name: Terraform Init
