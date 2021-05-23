@@ -41,6 +41,7 @@ jobs:
         id: plan
         run: terraform plan -no-color
         working-directory: ./environments/staging
+        continue-on-error: true
 
       - uses: actions/github-script@v4
         if: github.event_name == 'pull_request'
