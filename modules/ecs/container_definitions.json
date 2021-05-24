@@ -1,7 +1,7 @@
 [
   {
-    "name": "nginx",
-    "image": "nginx:latest",
+    "name": "rails",
+    "image": "762742784206.dkr.ecr.ap-northeast-1.amazonaws.com/machamp-repository:latest",
     "essential": true,
     "portMappings": [
       {

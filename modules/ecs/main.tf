@@ -19,7 +19,7 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = var.lb_target_group_arn
-    container_name   = "nginx" // FIXME
+    container_name   = "rails"
     container_port   = 80
   }
 
