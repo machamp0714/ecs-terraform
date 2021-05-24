@@ -20,10 +20,11 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "target_group" {
-  name     = "example" // FIXME
-  vpc_id   = var.vpc_id
-  port     = 80
-  protocol = "HTTP"
+  name        = "example" // FIXME
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+  port        = 80
+  protocol    = "HTTP"
 
   health_check {
     path                = "/"
