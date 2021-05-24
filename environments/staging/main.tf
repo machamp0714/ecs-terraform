@@ -11,7 +11,7 @@ locals {
 
 module "network" {
   source = "../../modules/network"
-  tags = merge(local.tag)
+  tags   = merge(local.tag)
 }
 
 module "alb" {
@@ -34,7 +34,7 @@ module "ecr" {
 }
 
 module "ecs" {
-  source = "../../modules/ecs"
+  source       = "../../modules/ecs"
   cluster_name = "machamp-staging-cluster"
   service_name = "machamp-staging-service"
   public_subnet_ids = [
@@ -55,7 +55,7 @@ module "http_sg" {
   name        = "http-sg"
   port        = 80
   cidr_blocks = ["0.0.0.0/0"]
-  tags = merge(local.tag)
+  tags        = merge(local.tag)
 }
 
 module "https_sg" {
@@ -64,14 +64,14 @@ module "https_sg" {
   name        = "https-sg"
   port        = 443
   cidr_blocks = ["0.0.0.0/0"]
-  tags = merge(local.tag)
+  tags        = merge(local.tag)
 }
 
 module "ecs_service_sg" {
-  source = "../../modules/security_group"
-  vpc_id = module.network.vpc_id
-  name   = "ecs_service_sg"
-  port   = 80
+  source      = "../../modules/security_group"
+  vpc_id      = module.network.vpc_id
+  name        = "ecs_service_sg"
+  port        = 80
   cidr_blocks = [module.network.cidr_block]
-  tags = merge(local.tag)
+  tags        = merge(local.tag)
 }
