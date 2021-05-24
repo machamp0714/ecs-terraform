@@ -18,11 +18,20 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = var.lb_target_group_arn
-    container_name   = "example" // FIXME
+    container_name   = "nginx" // FIXME
     container_port   = 80
   }
 
   lifecycle {
     ignore_changes = [task_definition]
   }
+}
+
+resource "aws_ecs_task_definition" "taskdef" {
+  family                   = var.family_name
+  cpu                      = "256"
+  memory                   = "512"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = file("../../modules/ecs/container_definitions.json")
 }

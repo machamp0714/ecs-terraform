@@ -8,6 +8,11 @@ variable "service_name" {
   type        = string
 }
 
+variable "family_name" {
+  description = "Name of Family"
+  type        = string
+}
+
 variable "public_subnet_ids" {
   description = "List of Public Subnet ids"
   type        = list(string)
