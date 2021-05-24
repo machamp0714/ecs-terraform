@@ -2,12 +2,16 @@ provider "aws" {
   region = "ap-northeast-1"
 }
 
-module "network" {
-  source = "../../modules/network"
-  tags = {
+locals {
+  tag = {
     env    = "staging"
     system = "machamp"
   }
+}
+
+module "network" {
+  source = "../../modules/network"
+  tags = merge(local.tag)
 }
 
 module "alb" {
@@ -51,10 +55,7 @@ module "http_sg" {
   name        = "http-sg"
   port        = 80
   cidr_blocks = ["0.0.0.0/0"]
-  tags = {
-    env    = "staging"
-    system = "machamp"
-  }
+  tags = merge(local.tag)
 }
 
 module "https_sg" {
@@ -63,10 +64,7 @@ module "https_sg" {
   name        = "https-sg"
   port        = 443
   cidr_blocks = ["0.0.0.0/0"]
-  tags = {
-    env    = "staging"
-    system = "machamp"
-  }
+  tags = merge(local.tag)
 }
 
 module "ecs_service_sg" {
@@ -75,8 +73,5 @@ module "ecs_service_sg" {
   name   = "ecs_service_sg"
   port   = 80
   cidr_blocks = [module.network.cidr_block]
-  tags = {
-    env    = "staging"
-    system = "machamp"
-  }
+  tags = merge(local.tag)
 }
