@@ -37,7 +37,7 @@ module "ecs" {
   source       = "../../modules/ecs"
   cluster_name = "machamp-staging-cluster"
   service_name = "machamp-staging-service"
-  family_name  = "ecs-demo"
+  family_name  = "staging"
   public_subnet_ids = [
     module.network.public_subet_1a_id,
     module.network.public_subnet_1c_id
