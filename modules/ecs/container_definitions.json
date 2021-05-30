@@ -1,6 +1,6 @@
 [
   {
-    "name": "rails",
+    "name": "app",
     "image": "762742784206.dkr.ecr.ap-northeast-1.amazonaws.com/machamp-repository:latest",
     "essential": true,
     "portMappings": [
@@ -8,6 +8,14 @@
         "protocol": "tcp",
         "containerPort": 80
       }
-    ]
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "app",
+        "awslogs-group": "/machamp-staging"
+      }
+    }
   }
 ]
