@@ -34,10 +34,11 @@ module "ecr" {
 }
 
 module "ecs" {
-  source       = "../../modules/ecs"
-  cluster_name = "machamp-staging-cluster"
-  service_name = "machamp-staging-service"
-  family_name  = "staging"
+  source              = "../../modules/ecs"
+  cluster_name        = "machamp-staging-cluster"
+  service_name        = "machamp-staging-service"
+  family_name         = "staging"
+  lb_target_group_arn = module.alb.lb_target_group_arn
   public_subnet_ids = [
     module.network.public_subet_1a_id,
     module.network.public_subnet_1c_id
@@ -45,7 +46,6 @@ module "ecs" {
   security_group_ids = [
     module.ecs_service_sg.security_group_id
   ]
-  lb_target_group_arn = module.alb.lb_target_group_arn
 }
 
 // Security Groups
