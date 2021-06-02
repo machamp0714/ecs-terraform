@@ -12,7 +12,7 @@ resource "aws_ecs_service" "service" {
   health_check_grace_period_seconds = 60
 
   network_configuration {
-    assign_public_ip = false
+    assign_public_ip = var.enable_public_id
     security_groups  = var.security_group_ids
     subnets          = var.public_subnet_ids
   }

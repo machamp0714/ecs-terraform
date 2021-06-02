@@ -27,3 +27,8 @@ variable "lb_target_group_arn" {
   description = "ARN of Load Balancer Target Group"
   type        = string
 }
+
+variable "enable_public_id" {
+  description = "Assign a public IP address to the ENI"
+  type        = bool
+}
