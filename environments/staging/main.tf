@@ -38,6 +38,7 @@ module "ecs" {
   cluster_name        = "machamp-staging-cluster"
   service_name        = "machamp-staging-service"
   family_name         = "staging"
+  enable_public_id    = true
   lb_target_group_arn = module.alb.lb_target_group_arn
   public_subnet_ids = [
     module.network.public_subet_1a_id,
