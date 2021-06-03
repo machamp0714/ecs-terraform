@@ -51,7 +51,7 @@ module "ecs" {
 
 module "cloudwatch_logs" {
   source            = "../../modules/cloudwatch"
-  name              = "/staging/ecs/app"
+  name              = "/machamp/staging/ecs"
   retention_in_days = 30
 }
 
