@@ -49,6 +49,12 @@ module "ecs" {
   ]
 }
 
+module "cloudwatch_logs" {
+  source            = "../../modules/cloudwatch"
+  name              = "/staging/ecs/app"
+  retention_in_days = 30
+}
+
 // Security Groups
 
 module "http_sg" {
