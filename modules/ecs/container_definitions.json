@@ -14,7 +14,7 @@
       "options": {
         "awslogs-region": "ap-northeast-1",
         "awslogs-stream-prefix": "app",
-        "awslogs-group": "/machamp-staging"
+        "awslogs-group": "/machamp/staging/ecs"
       }
     }
   }
