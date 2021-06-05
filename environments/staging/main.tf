@@ -34,12 +34,13 @@ module "ecr" {
 }
 
 module "ecs" {
-  source              = "../../modules/ecs"
-  cluster_name        = "machamp-staging-cluster"
-  service_name        = "machamp-staging-service"
-  family_name         = "staging"
-  enable_public_id    = true
-  lb_target_group_arn = module.alb.lb_target_group_arn
+  source                     = "../../modules/ecs"
+  cluster_name               = "machamp-staging-cluster"
+  service_name               = "machamp-staging-service"
+  family_name                = "staging"
+  enable_public_id           = true
+  lb_target_group_arn        = module.alb.lb_target_group_arn
+  container_definitions_json = file("./container_definitions.json")
   public_subnet_ids = [
     module.network.public_subet_1a_id,
     module.network.public_subnet_1c_id

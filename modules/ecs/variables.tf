@@ -32,3 +32,8 @@ variable "enable_public_id" {
   description = "Assign a public IP address to the ENI"
   type        = bool
 }
+
+variable "container_definitions_json" {
+  description = "JSON of container definition"
+  type        = string
+}
