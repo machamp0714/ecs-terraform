@@ -21,7 +21,7 @@ resource "aws_db_option_group" "this" {
   name                     = var.option_group_name
   option_group_description = local.option_group_description
   engine_name              = "mysql"
-  major_engine_version     = "8.0.20"
+  major_engine_version     = "8.0"
 
   dynamic "option" {
     for_each = var.options
