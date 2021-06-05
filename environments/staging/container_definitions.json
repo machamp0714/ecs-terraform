@@ -12,9 +12,13 @@
     ],
     "environment": [
       { "name": "RAILS_ENV", "value": "staging" },
-      { "name": "RAILS_SERVE_STATIC_FILES", "value": "1" },
-      { "name": "DATABASE_HOST", "value": "127.0.0.1" },
-      { "name": "DATABASE_SOCKET", "value": "/var/run/mysqld/mysqld.sock" }
+      { "name": "RAILS_SERVE_STATIC_FILES", "value": "1" }
+    ],
+    "secrets": [
+      { "name": "RAILS_MASTER_KEY", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/machamp-rails-staging-key" },
+      { "name": "DATABASE_USERNAME", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/staging-db-username" },
+      { "name": "DATABASE_PASSWORD", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/staging-db-password" },
+      { "name": "DATABASE_HOST", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/staging-db-host" }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",
