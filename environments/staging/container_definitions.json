@@ -10,6 +10,10 @@
         "containerPort": 80
       }
     ],
+    "environment": [
+      { "name": "RAILS_ENV", "value": "staging" },
+      { "name": "RAILS_SERVE_STATIC_FILES", "value": "1" }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
