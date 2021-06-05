@@ -63,7 +63,7 @@ module "rds" {
   subnet_group_name      = "machamp-staging-subnet-group"
   subnet_ids             = [module.network.private_subnet_1a_id, module.network.private_subnet_1c_id]
   identifier             = "machamp-staging-db"
-  instance_class         = "t3.small"
+  instance_class         = "db.t3.small"
   storage_type           = "gp2"
   allocated_storage      = 20
   username               = "admin"
