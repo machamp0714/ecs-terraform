@@ -15,10 +15,10 @@
       { "name": "RAILS_SERVE_STATIC_FILES", "value": "true" }
     ],
     "secrets": [
-      { "name": "RAILS_MASTER_KEY", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/machamp-rails-staging-key" },
-      { "name": "DATABASE_USERNAME", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/staging-db-username" },
-      { "name": "DATABASE_PASSWORD", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/staging-db-password" },
-      { "name": "DATABASE_HOST", "valueFrom": "arn:aws:ssm:region:762742784206:parameter/staging-db-host" }
+      { "name": "RAILS_MASTER_KEY", "valueFrom": "/machamp-rails-staging-key" },
+      { "name": "DATABASE_USERNAME", "valueFrom": "/staging-db-username" },
+      { "name": "DATABASE_PASSWORD", "valueFrom": "/staging-db-password" },
+      { "name": "DATABASE_HOST", "valueFrom": "/staging-db-host" }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",
