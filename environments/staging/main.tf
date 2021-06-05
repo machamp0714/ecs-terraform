@@ -56,6 +56,22 @@ module "cloudwatch_logs" {
   retention_in_days = 30
 }
 
+module "rds" {
+  source                 = "../../modules/rds"
+  parameter_group_name   = "machamp-staging"
+  option_group_name      = "machamp-staging"
+  subnet_group_name      = "machamp-staging-subnet-group"
+  subnet_ids             = [module.network.private_subnet_1a_id, module.network.private_subnet_1c_id]
+  identifier             = "machamp-staging-db"
+  instance_class         = "t3.small"
+  storage_type           = "gp2"
+  allocated_storage      = 20
+  username               = "admin"
+  password               = "password"
+  multi_az               = false
+  vpc_security_group_ids = [module.db_sg.security_group_id]
+}
+
 // Security Groups
 
 module "http_sg" {
@@ -81,6 +97,15 @@ module "ecs_service_sg" {
   vpc_id      = module.network.vpc_id
   name        = "ecs_service_sg"
   port        = 80
+  cidr_blocks = [module.network.cidr_block]
+  tags        = merge(local.tag)
+}
+
+module "db_sg" {
+  source      = "../../modules/security_group"
+  vpc_id      = module.network.vpc_id
+  name        = "mysql-sg"
+  port        = 3306
   cidr_blocks = [module.network.cidr_block]
   tags        = merge(local.tag)
 }
