@@ -2,7 +2,7 @@
   {
     "name": "app",
     "image": "762742784206.dkr.ecr.ap-northeast-1.amazonaws.com/machamp-repository:latest",
-    "command": ["/bin/sh", "-ecs", "bundle exec rails db:create\nbundle exec rails db:migrate\nbundle exec rails server -b 0.0.0.0"],
+    "command": ["/bin/sh", "-ecs", "rm tmp/pids/server.pid\nbundle exec rails db:migrate\nbundle exec rails server -b 0.0.0.0"],
     "essential": true,
     "portMappings": [
       {
