@@ -20,7 +20,7 @@ resource "aws_ecs_service" "service" {
   load_balancer {
     target_group_arn = var.lb_target_group_arn
     container_name   = "app"
-    container_port   = 80
+    container_port   = 3000
   }
 
   lifecycle {
