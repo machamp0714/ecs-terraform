@@ -14,7 +14,7 @@
       { "name": "RAILS_ENV", "value": "staging" },
       { "name": "RAILS_SERVE_STATIC_FILES", "value": "1" },
       { "name": "DATABASE_HOST", "value": "127.0.0.1" },
-      { "name": "DATABASE_SOCKET", "value": "/run/mysqld/mysqld.sock" }
+      { "name": "DATABASE_SOCKET", "value": "/var/run/mysqld/mysqld.sock" }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",
