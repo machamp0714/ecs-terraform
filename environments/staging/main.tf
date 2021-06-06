@@ -15,13 +15,10 @@ module "network" {
 }
 
 module "alb" {
-  source = "../../modules/alb"
-  name   = "machamp-staging-alb"
-  vpc_id = module.network.vpc_id
-  security_group_ids = [
-    module.http_sg.security_group_id,
-    module.https_sg.security_group_id
-  ]
+  source             = "../../modules/alb"
+  name               = "machamp-staging-alb"
+  vpc_id             = module.network.vpc_id
+  security_group_ids = [module.alb_sg.id]
   subnet_ids = [
     module.network.public_subet_1a_id,
     module.network.public_subnet_1c_id
@@ -46,7 +43,7 @@ module "ecs" {
     module.network.public_subnet_1c_id
   ]
   security_group_ids = [
-    module.ecs_service_sg.security_group_id
+    module.ecs_task_sg.id
   ]
 }
 
@@ -61,7 +58,6 @@ module "rds" {
   parameter_group_name   = "machamp-staging"
   option_group_name      = "machamp-staging"
   subnet_group_name      = "machamp-staging-subnet-group"
-  subnet_ids             = [module.network.private_subnet_1a_id, module.network.private_subnet_1c_id]
   identifier             = "machamp-staging-db"
   instance_class         = "db.t3.small"
   storage_type           = "gp2"
@@ -69,43 +65,64 @@ module "rds" {
   username               = "admin"
   password               = "password"
   multi_az               = false
-  vpc_security_group_ids = [module.db_sg.security_group_id]
+  subnet_ids             = [module.network.private_subnet_1a_id, module.network.private_subnet_1c_id]
+  vpc_security_group_ids = [module.db_sg.id]
 }
 
-// Security Groups
+##########################
+# Security Groups
+##########################
 
-module "http_sg" {
-  source      = "../../modules/security_group"
-  vpc_id      = module.network.vpc_id
-  name        = "http-sg"
-  port        = 80
-  cidr_blocks = ["0.0.0.0/0"]
-  tags        = merge(local.tag)
+module "alb_sg" {
+  source = "../../modules/security_group"
+
+  vpc_id = module.network.vpc_id
+  name   = "alb-sg"
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "HTTP"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "HTTPS"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+  tags = merge(local.tag)
 }
 
-module "https_sg" {
-  source      = "../../modules/security_group"
-  vpc_id      = module.network.vpc_id
-  name        = "https-sg"
-  port        = 443
-  cidr_blocks = ["0.0.0.0/0"]
-  tags        = merge(local.tag)
-}
+module "ecs_task_sg" {
+  source = "../../modules/security_group"
 
-module "ecs_service_sg" {
-  source      = "../../modules/security_group"
-  vpc_id      = module.network.vpc_id
-  name        = "ecs_service_sg"
-  port        = 80
-  cidr_blocks = [module.network.cidr_block]
-  tags        = merge(local.tag)
+  vpc_id = module.network.vpc_id
+  name   = "ecs_service_sg"
+  ingress_with_source_security_group_id = [
+    {
+      from_port                = 0
+      to_port                  = 65535
+      protocol                 = -1
+      source_security_group_id = module.alb_sg.id
+    }
+  ]
+  tags = merge(local.tag)
 }
 
 module "db_sg" {
-  source      = "../../modules/security_group"
-  vpc_id      = module.network.vpc_id
-  name        = "mysql-sg"
-  port        = 3306
-  cidr_blocks = [module.network.cidr_block]
-  tags        = merge(local.tag)
+  source = "../../modules/security_group"
+
+  vpc_id = module.network.vpc_id
+  name   = "mysql-sg"
+  ingress_with_source_security_group_id = [
+    {
+      from_port                = 3306
+      to_port                  = 3306
+      protocol                 = "tcp"
+      source_security_group_id = module.ecs_task_sg.id
+    }
+  ]
+  tags = merge(local.tag)
 }
