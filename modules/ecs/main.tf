@@ -17,6 +17,10 @@ resource "aws_ecs_service" "service" {
     subnets          = var.public_subnet_ids
   }
 
+  deployment_controller {
+    type = "CODE_DEPLOY"
+  }
+
   load_balancer {
     target_group_arn = var.lb_target_group_arn
     container_name   = "app"
