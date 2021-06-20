@@ -21,10 +21,14 @@ resource "aws_ecs_service" "service" {
     type = "CODE_DEPLOY"
   }
 
-  load_balancer {
-    target_group_arn = var.lb_target_group_arn
-    container_name   = "app"
-    container_port   = 3000
+  dynamic "load_balancer" {
+    for_each = var.lb_target_group_arns
+
+    content {
+      target_group_arn = load_balancer.value
+      container_name   = "app"
+      container_port   = 3000
+    }
   }
 
   lifecycle {
