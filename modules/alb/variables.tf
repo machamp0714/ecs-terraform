@@ -17,3 +17,13 @@ variable "subnet_ids" {
   description = "List of public subnets ids"
   type        = list(string)
 }
+
+variable "listeners" {
+  description = "A List of listeners"
+  default     = []
+}
+
+variable "target_groups" {
+  description = "A List of target group"
+  default     = []
+}
