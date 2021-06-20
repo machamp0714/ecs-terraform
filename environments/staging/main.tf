@@ -23,6 +23,28 @@ module "alb" {
     module.network.public_subet_1a_id,
     module.network.public_subnet_1c_id
   ]
+  listeners = [
+    {
+      port     = 80
+      protocol = "HTTP"
+    },
+    {
+      port     = 8080
+      protocol = "HTTP"
+    }
+  ]
+  target_groups = [
+    {
+      name     = "staging-target-group-for-users"
+      port     = 80
+      protocol = "HTTP"
+    },
+    {
+      name     = "staging-target-group-for-test"
+      port     = 8080
+      protocol = "HTTP"
+    }
+  ]
 }
 
 module "ecr" {
@@ -36,7 +58,7 @@ module "ecs" {
   service_name               = "machamp-staging-service"
   family_name                = "staging"
   enable_public_id           = true
-  lb_target_group_arn        = module.alb.lb_target_group_arn
+  lb_target_group_arns       = module.alb.lb_target_group_arns
   container_definitions_json = file("./container_definitions.json")
   public_subnet_ids = [
     module.network.public_subet_1a_id,
@@ -82,6 +104,12 @@ module "alb_sg" {
     {
       from_port   = 80
       to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      from_port   = 8080
+      to_port     = 8080
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },

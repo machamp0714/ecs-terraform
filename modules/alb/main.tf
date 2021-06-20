@@ -8,23 +8,27 @@ resource "aws_lb" "alb" {
   idle_timeout               = 60
 }
 
-resource "aws_lb_listener" "http" {
+resource "aws_lb_listener" "this" {
+  count = length(var.listeners)
+
   load_balancer_arn = aws_lb.alb.arn
-  port              = 80
-  protocol          = "HTTP"
+  port              = var.listeners[count.index].port
+  protocol          = var.listeners[count.index].protocol
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.arn
+    target_group_arn = aws_lb_target_group.this[count.index].arn
   }
 }
 
-resource "aws_lb_target_group" "target_group" {
-  name        = "example" // FIXME
+resource "aws_lb_target_group" "this" {
+  count = length(var.target_groups)
+
+  name        = var.target_groups[count.index].name
   vpc_id      = var.vpc_id
+  port        = var.target_groups[count.index].port
+  protocol    = var.target_groups[count.index].protocol
   target_type = "ip"
-  port        = 80
-  protocol    = "HTTP"
 
   health_check {
     path                = "/"
@@ -34,7 +38,7 @@ resource "aws_lb_target_group" "target_group" {
     interval            = 60
     matcher             = 200
     port                = "traffic-port"
-    protocol            = "HTTP"
+    protocol            = var.target_groups[count.index].protocol
   }
 
   depends_on = [aws_lb.alb]

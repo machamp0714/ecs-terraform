@@ -23,9 +23,9 @@ variable "security_group_ids" {
   type        = list(string)
 }
 
-variable "lb_target_group_arn" {
-  description = "ARN of Load Balancer Target Group"
-  type        = string
+variable "lb_target_group_arns" {
+  description = "A List ARN of Load Balancer Target Group"
+  type        = list(string)
 }
 
 variable "enable_public_id" {
