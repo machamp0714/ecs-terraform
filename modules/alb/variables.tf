@@ -20,10 +20,12 @@ variable "subnet_ids" {
 
 variable "listeners" {
   description = "A List of listeners"
+  type        = list(object({ port = number, protocol = string}))
   default     = []
 }
 
 variable "target_groups" {
   description = "A List of target group"
+  type        = list(object({ name = string, port = number, protocol = string }))
   default     = []
 }
