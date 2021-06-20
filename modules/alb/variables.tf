@@ -20,7 +20,7 @@ variable "subnet_ids" {
 
 variable "listeners" {
   description = "A List of listeners"
-  type        = list(object({ port = number, protocol = string}))
+  type        = list(object({ port = number, protocol = string }))
   default     = []
 }
 
