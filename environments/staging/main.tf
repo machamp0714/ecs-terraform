@@ -91,6 +91,18 @@ module "rds" {
   vpc_security_group_ids = [module.db_sg.id]
 }
 
+module "elasticache" {
+  source = "../../modules/elasticache"
+
+  replication_group_id          = "machamp-staging-redis"
+  replication_group_description = "Cluster Disabled"
+  number_cache_clusters         = 1
+  node_type                     = "cache.t3.micro"
+  security_group_ids            = [module.redis_sg.id]
+  subnet_group_name             = "machamp-staging-redis-subnet-group"
+  subnet_ids                    = [module.network.private_subnet_1a_id, module.network.private_subnet_1c_id]
+}
+
 ##########################
 # Security Groups
 ##########################
@@ -148,6 +160,22 @@ module "db_sg" {
     {
       from_port                = 3306
       to_port                  = 3306
+      protocol                 = "tcp"
+      source_security_group_id = module.ecs_task_sg.id
+    }
+  ]
+  tags = merge(local.tag)
+}
+
+module "redis_sg" {
+  source = "../../modules/security_group"
+
+  vpc_id = module.network.vpc_id
+  name   = "redis-sg"
+  ingress_with_source_security_group_id = [
+    {
+      from_port                = 6379
+      to_port                  = 6379
       protocol                 = "tcp"
       source_security_group_id = module.ecs_task_sg.id
     }
