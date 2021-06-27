@@ -10,7 +10,7 @@ variable "replication_group_description" {
 
 variable "number_cache_clusters" {
   description = "A number of clusters"
-  type = number
+  type        = number
 }
 
 variable "node_type" {
